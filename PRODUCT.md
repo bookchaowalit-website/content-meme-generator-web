@@ -1,46 +1,42 @@
-# bookchaowalit-meme-generator-frontend — Product brief
+# Meme Generator — Product truth
 
-**Slug:** `bookchaowalit-website/bookchaowalit-meme-generator-frontend`  
-**Generated:** 2026-08-11 (bulk Book Dev closeout)  
-**Status:** starter / portfolio boundary
+> Inferred from the code and copy (no user interview). Checked against the portfolio card claims review
+> (`portfolio-site-web/docs/audits/CARD-CLAIMS-REVIEW-2026-10.md`, row `meme-generator`, evidence Live→Prototype) on
+> 2026-10-23.
 
-## Purpose
+## What it is
 
-Portfolio repository under Book Dev. This brief records ownership and the
-current honest status so the nested tree is not an empty shell in the task
-system.
+A client-only demo that overlays a top and bottom caption on one inline SVG illustration.
 
-## Runnable path
+## Who it is for
 
-See `README.md` for install and run instructions when present.
+A portfolio visitor who wants to play with a small caption-overlay UI.
 
-## Limits
+## What works today
 
-- Not claimed as production-ready unless README and tests prove it.
-- Mobile smoke / emulator acceptance is separate and toolchain-dependent.
+1. Edit the top and bottom captions, or "Shuffle preset" through 3 built-in caption pairs.
+2. Pick the caption ink colour with a colour picker.
+3. Each caption is sized from its length to fit the canvas width at any screen size; very long captions wrap.
+4. `/api/mcp` answers JSON-RPC with `get_presets` (the same 3 presets).
+5. Front-end and server errors go to Sentry (errors only, personal data stripped) when `NEXT_PUBLIC_SENTRY_DSN` is set.
 
-## Source README excerpt
+## What does not work (and must not be claimed)
 
-```
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+- No popular-template library, custom template upload, font-size control, Canvas/image export or community use
+  (claims removed from the portfolio card in the 2026-10 review). The "800 × 450" label is the SVG's view box, not
+  an export size.
+- No storage, account or sync; nothing survives a reload. No product analytics beyond Vercel Analytics.
 
-## Getting Started
+## Live URL and deploy state
 
-First, run the development server:
+- Live: https://meme-generator.bookchaowalit.com (HTTP 200 on 2026-10-23).
+- The Vercel project `bookchaowalit-meme-generator-frontend` is deployed only by CLI (last production 2026-10-23
+  12:22 +07, the CVE patch, commit 96efe76) and its Git link names the old repository
+  (`bookchaowalit/bookchaowalit-meme-generator-frontend`), so a push to `main` does not deploy. The live site lags
+  `main` (no Sentry, old template MCP route, top caption still clipped at wide screens) until the owner reconnects
+  Vercel Git to this repository (owner action D9). `NEXT_PUBLIC_SENTRY_DSN` is already set on the Vercel project
+  (Sentry project `content-meme-generator-web`, org `personal-yu0`).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Boundaries
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize an
-```
+- Browser-only apart from the stateless `/api/mcp` route.
