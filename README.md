@@ -37,4 +37,6 @@ scan on every push and PR to `main`.
 - `app/api/mcp/route.ts`: stateless JSON-RPC endpoint with `get_presets`.
 - `lib/sentry.ts` + `instrumentation*.ts`: error reporting to Sentry, errors only, personal data stripped; off when
   `NEXT_PUBLIC_SENTRY_DSN` is unset.
-- `app/more-projects/page.tsx`: shared portfolio link page (copied per repository, not a package).
+- `app/page.tsx`: the page on the shared App shell (`app/app-shell.css`, `components/app-shell.tsx`, see `APP-SHELL.md`).
+- `lib/export.ts`: Download PNG; draws the artwork SVG and both captions on a 1600 × 900 canvas in the browser.
+- `/more-projects` redirects permanently to https://bookchaowalit.com/ (`next.config.ts`).

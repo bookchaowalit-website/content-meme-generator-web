@@ -1,56 +1,40 @@
 ---
-name: Press / LOL
-description: A small screen-print caption press for composing a two-line meme proof locally.
+name: Meme Generator
+description: Two caption lines on an authored picture, made and downloaded in the browser.
 ---
 
-# Design System: Press / LOL
+# Design System: Meme Generator
 
 ## Overview
 
-**Creative North Star: “The joke is set in ink.”**
-
-Press / LOL is a caption overlay studio, not a media editor or image-generation product. The user writes a top line and a bottom line, chooses an ink color, sees the result on an authored vector proof, and can shuffle to a local preset. The screen-print metaphor gives the tiny tool a memorable own-world.
+A caption overlay tool, not a media editor or image-generation product. The user writes a top and a bottom
+line, picks an ink colour, sees the result on one authored vector picture, can shuffle through three local
+presets, and downloads the result as a PNG made on their device. Since 2026-11-19 it uses the shared App shell
+(`app/app-shell.css`, `components/app-shell.tsx`, `APP-SHELL.md`).
 
 ## Colors
 
-- Midnight ink `#111522` is the press room.
-- Coral paper `#f06b55` is the authored proof ground.
-- Registration yellow `#f2d34f` marks controls and live selection.
-- Signal blue `#6d8cf2` is reserved for secondary annotations.
-- White `#f5f0df` is readable copy; avoid gradients so flat ink stays intentional.
+The page uses only the App shell tokens (`--as-*`, light and dark). The picture keeps its own fixed palette:
+coral `#e4634c`, yellow `#f0ce4e`, navy `#1b3f79`, cream `#f7f0da`; captions are outlined in `#162337`.
 
 ## Typography
 
-- Poster captions use a condensed sans stack with heavy weight, uppercase, and a restrained ink outline.
-- UI labels use a monospace stack for press marks and control names.
-- Supporting copy stays small and direct; it should never compete with the proof.
+Geist via `next/font` (variable on `<html>`) for the page and the captions (weight 900, uppercase), so the
+proof and the PNG look the same on every OS. No mono labels; nothing under 12px.
 
 ## Layout
 
-- Controls and the live 16:9 proof share the first viewport on desktop.
-- The proof is a single authored vector face with caption layers; controls sit beside it as a press ticket.
-- On mobile the ticket comes first, then the proof at a readable width, then the local-only note.
-
-## Elevation & Depth
-
-Flat poster planes and registration rules create depth. The proof has a hard border; no glass panel or shadow stack is needed.
-
-## Shapes
-
-Use square press controls and small 2px corners. The vector’s circular face is content, not a reusable card shape. Avoid pill-heavy controls.
+Top bar, page head, then the proof (left) and the caption controls (right). On phones the proof comes first
+and the fields follow straight under it, so both fit the first screen and the caption stays visible while typing.
 
 ## Components
 
-- **Caption ticket:** top/bottom text fields, color input, and preset action.
-- **Live proof:** authored inline SVG with two positioned caption layers.
-- **Press mark:** communicates that output is a local visual proof, not a downloadable image pipeline.
-- **Preset shuffle:** changes the text locally without pretending to fetch trends.
+- **Proof:** inline SVG picture with two caption layers; a placeholder when both lines are empty.
+- **Controls:** Top line, Bottom line, a 44px colour well with its hex value, Shuffle preset (plain button),
+  Download PNG (the one filled button) and a status line.
 
 ## Do's and Don'ts
 
 - Do keep the caption result visible while editing.
-- Do make the vector artwork authored and deterministic.
-- Do state that the tool is client-only and does not export an image file yet.
-- Don't imply social trend data, AI generation, or production image export.
-- Don't use Impact/Arial Black as a default display voice or turn the proof into a generic card.
-
+- Do say that everything happens in the browser: no upload, account or publishing.
+- Don't imply trend data, AI generation or a hosted image service.
