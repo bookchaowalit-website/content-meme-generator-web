@@ -21,6 +21,12 @@ export const CAPTION_WIDTH_CQW = 90;
 export const CAPTION_CHAR_EM = 0.72;
 export const CAPTION_MAX_CQW = 7;
 export const CAPTION_MIN_CQW = 3.2;
+/**
+ * Longest caption, in characters. At the minimum size even 140 W's (the widest letter) wrap to about 5 lines,
+ * which stays inside the caption's own half of the picture, so the top and bottom lines never run off the
+ * image or into each other in the proof or the PNG.
+ */
+export const CAPTION_MAX_LENGTH = 140;
 
 /**
  * Font size (cqw) that lets `text` fit on one line inside the caption box, between the min and max sizes.

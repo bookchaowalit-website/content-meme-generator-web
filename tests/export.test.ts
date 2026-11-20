@@ -50,6 +50,25 @@ describe("drawCaptions", () => {
     expect(ctx.fillStyle).toBe("#ffffff");
   });
 
+  it("keeps even the longest captions inside the picture and apart from each other", () => {
+    const calls: { text: string; y: number; size: number }[] = [];
+    const ctx = {
+      font: "", fillStyle: "", strokeStyle: "", lineWidth: 0, lineJoin: "miter", textAlign: "start", textBaseline: "alphabetic",
+      // A W in a 900-weight sans is about as wide as the font size; the size is read back from ctx.font.
+      measureText(this: { font: string }, text: string) { return { width: text.length * Number(/(\d+(?:\.\d+)?)px/.exec(this.font)![1]) } as TextMetrics; },
+      fillText(this: { font: string }, text: string, _x: number, y: number) { calls.push({ text, y, size: Number(/(\d+(?:\.\d+)?)px/.exec(this.font)![1]) }); },
+      strokeText() {},
+    } as unknown as CaptionContext;
+    drawCaptions(ctx, { top: "W".repeat(500), bottom: "W".repeat(500), ink: "#fff", family: "x" });
+    const top = calls.filter((c) => c.y < 450);
+    const bottom = calls.filter((c) => c.y >= 450);
+    expect(top.map((c) => c.text).join("")).toBe("W".repeat(140));
+    const topEnd = Math.max(...top.map((c) => c.y + c.size * 0.95));
+    expect(topEnd).toBeLessThanOrEqual(Math.min(...bottom.map((c) => c.y)));
+    expect(Math.min(...calls.map((c) => c.y))).toBeGreaterThanOrEqual(0);
+    expect(Math.max(...calls.map((c) => c.y + c.size * 0.95))).toBeLessThanOrEqual(900);
+  });
+
   it("skips an empty line", () => {
     const { ctx, calls } = recorder();
     drawCaptions(ctx, { top: " ", bottom: "", ink: "#000", family: "x" });

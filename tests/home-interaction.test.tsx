@@ -74,4 +74,9 @@ describe("meme generator", () => {
     expect($('[role="status"]').textContent).toContain("could not make the PNG");
     expect(button("Download PNG").disabled).toBe(false);
   });
+
+  it("caps each caption so it fits its half of the picture", () => {
+    expect(field("Top line").maxLength).toBe(140);
+    expect(field("Bottom line").maxLength).toBe(140);
+  });
 });

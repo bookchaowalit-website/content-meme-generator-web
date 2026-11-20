@@ -1,6 +1,6 @@
 // Turning the live proof into a PNG in the browser: the artwork SVG is drawn on a canvas, then the two
 // captions are drawn on top with the same size rules as the page (captionSize, in % of the width).
-import { captionSize } from "@/lib/meme";
+import { CAPTION_MAX_LENGTH, captionSize } from "@/lib/meme";
 
 export const EXPORT_WIDTH = 1600;
 export const EXPORT_HEIGHT = 900;
@@ -57,7 +57,9 @@ export type CaptionContext = Pick<CanvasRenderingContext2D, "fillText" | "stroke
 /** Draws both captions (uppercase, outlined, centred, 5% from the top and bottom edges). */
 export function drawCaptions(ctx: CaptionContext, captions: { top: string; bottom: string; ink: string; family: string }, width = EXPORT_WIDTH, height = EXPORT_HEIGHT) {
   const boxWidth = width * 0.9;
-  for (const [text, edge] of [[captions.top, "top"], [captions.bottom, "bottom"]] as const) {
+  for (const [full, edge] of [[captions.top, "top"], [captions.bottom, "bottom"]] as const) {
+    // Same cap as the inputs, so a caption set some other way still fits its half of the picture.
+    const text = full.slice(0, CAPTION_MAX_LENGTH);
     if (!text.trim()) continue;
     const size = (captionSize(text) / 100) * width;
     const lineHeight = size * 0.95;

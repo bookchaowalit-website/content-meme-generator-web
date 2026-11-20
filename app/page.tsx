@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { AppFoot, AppTop } from "@/components/app-shell";
 import { exportName, renderPng } from "@/lib/export";
-import { DEFAULT_INK, PRESETS, captionSize, nextPresetIndex } from "@/lib/meme";
+import { CAPTION_MAX_LENGTH, DEFAULT_INK, PRESETS, captionSize, nextPresetIndex } from "@/lib/meme";
 
 const SOURCE = "https://github.com/bookchaowalit-website/content-meme-generator-web";
 
@@ -78,8 +78,8 @@ export default function Home() {
               <h2 id="mg-controls-title">Captions</h2>
               <button type="button" className="as-plain" onClick={shuffle}>Shuffle preset</button>
             </div>
-            <label className="as-field">Top line<input value={top} onChange={(event) => setTop(event.target.value)} autoComplete="off" /></label>
-            <label className="as-field">Bottom line<input value={bottom} onChange={(event) => setBottom(event.target.value)} autoComplete="off" /></label>
+            <label className="as-field">Top line<input value={top} maxLength={CAPTION_MAX_LENGTH} onChange={(event) => setTop(event.target.value)} autoComplete="off" /></label>
+            <label className="as-field">Bottom line<input value={bottom} maxLength={CAPTION_MAX_LENGTH} onChange={(event) => setBottom(event.target.value)} autoComplete="off" /></label>
             <label className="mg-ink">
               <input type="color" value={ink} onChange={(event) => setInk(event.target.value)} />
               <span>Ink colour <span className="mg-hex">{ink}</span></span>
