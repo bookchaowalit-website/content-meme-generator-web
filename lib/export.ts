@@ -7,17 +7,36 @@ export const EXPORT_HEIGHT = 900;
 /** The caption outline colour (the page's text-shadow colour). */
 export const OUTLINE = "#162337";
 
-/** Words of `text` packed into lines no wider than `maxWidth`; a word longer than a line stands alone. */
+/** User-perceived characters, so a break never splits an emoji or a Thai vowel from its consonant. */
+function graphemes(text: string): string[] {
+  if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+    return [...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(text)].map((part) => part.segment);
+  }
+  return Array.from(text);
+}
+
+/**
+ * Words of `text` packed into lines no wider than `maxWidth`. Like the proof's `overflow-wrap: anywhere`, a word
+ * wider than a line (60 W's, Chinese without spaces) is broken between characters instead of running off the PNG.
+ */
 export function wrapCaption(text: string, maxWidth: number, measure: (line: string) => number): string[] {
   const lines: string[] = [];
   let line = "";
   for (const word of text.trim().split(/\s+/).filter(Boolean)) {
     const candidate = line ? `${line} ${word}` : word;
-    if (line && measure(candidate) > maxWidth) {
-      lines.push(line);
-      line = word;
-    } else {
+    if (measure(candidate) <= maxWidth) {
       line = candidate;
+      continue;
+    }
+    if (line) lines.push(line);
+    line = "";
+    for (const char of graphemes(word)) {
+      if (line && measure(line + char) > maxWidth) {
+        lines.push(line);
+        line = char;
+      } else {
+        line += char;
+      }
     }
   }
   if (line) lines.push(line);

@@ -5,10 +5,24 @@ import { captionSize } from "@/lib/meme";
 const measure = (line: string) => line.length * 10;
 
 describe("wrapCaption", () => {
-  it("packs words into lines and keeps an over-long word on its own line", () => {
+  it("packs words into lines", () => {
     expect(wrapCaption("aa bb cc", 50, measure)).toEqual(["aa bb", "cc"]);
     expect(wrapCaption("  ", 50, measure)).toEqual([]);
-    expect(wrapCaption("supercalifragilistic ok", 50, measure)).toEqual(["supercalifragilistic", "ok"]);
+  });
+
+  it("breaks a word wider than a line between characters, like overflow-wrap: anywhere", () => {
+    expect(wrapCaption("supercalifragilistic ok", 50, measure)).toEqual(["super", "calif", "ragil", "istic", "ok"]);
+    expect(wrapCaption("hi WWWWWWWWWWWW", 50, measure)).toEqual(["hi", "WWWWW", "WWWWW", "WW"]);
+    const lines = wrapCaption("W".repeat(60), 300, measure);
+    expect(lines.join("")).toBe("W".repeat(60));
+    expect(lines.every((line) => measure(line) <= 300)).toBe(true);
+    expect(wrapCaption("我们今天发布了新版本的软件", 40, measure)).toEqual(["我们今天", "发布了新", "版本的软", "件"]);
+  });
+
+  it("never splits a grapheme cluster", () => {
+    const family = "👨‍👩‍👧";
+    const lines = wrapCaption(family.repeat(3), 1, () => 2);
+    expect(lines).toEqual([family, family, family]);
   });
 });
 
