@@ -40,3 +40,8 @@ A portfolio visitor who wants to play with a small caption-overlay UI.
 ## Boundaries
 
 - Browser-only apart from the stateless `/api/mcp` route.
+
+## Known limits
+
+- The proof uses `letter-spacing: .02em` but the PNG canvas does not, so a caption that nearly fills a line can break one character differently in the PNG (pre-existing; Codex review 2026-11-20, content-meme-generator-web-c95a94c121.md).
+- The "Saved meme-….png" status does not wrap a long unbroken file name, so after downloading a caption like 48 W's the page can scroll sideways at 320px (pre-existing; same review).
